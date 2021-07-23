@@ -63,14 +63,18 @@ def coordinateOutput(i, *c):
 	print("\n")
 
 def thresholdmask(inputFrame):
-	threshold = cv2.threshold(inputFrame, MIN_INTENSITY, MAX_INTENSITY, cv2.THRESH_BINARY)[1] 				# Threshold frame to reveal lighter regions
-	threshold = cv2.erode(threshold, None, iterations=0) 	#2																					# Perform erosions and dilations in order to remove any smaller blobs of noise from threshold image
+  # Threshold frame to reveal lighter regions
+	threshold = cv2.threshold(inputFrame, MIN_INTENSITY, MAX_INTENSITY, cv2.THRESH_BINARY)[1] 		
+	# Perform erosions and dilations in order to remove any smaller blobs of noise from threshold image
+	threshold = cv2.erode(threshold, None, iterations=0) 	#2																					
 	threshold = cv2.dilate(threshold, None, iterations=0)	#4
 	
+ 	# Show video output of masking (DEBUG)
 	if debugMode == True:
-		cv2.imshow("Mask", threshold)																																			# Show video output of masking (DEBUG PURPOSE)
+		cv2.imshow("Mask", threshold)																																			
 
-	labels = measure.label(threshold, background=0) 																									# Perform a connected component analysis on the thresholded image, then initialize a mask to store only the "large" components
+	# Perform a connected component analysis on the thresholded image, then initialize a mask to store only the "large" components
+	labels = measure.label(threshold, background=0) 																									
 	mask = np.zeros(threshold.shape, dtype="uint8")
 
 	for (i, label) in enumerate(np.unique(labels)):
