@@ -2,7 +2,7 @@
 # in .py file folder: /Users/opencv/light_detection_stream
 # - workon cv
 # - deactivate
-# - (cv) python light_detection_stream.py
+# - (cv) python light_detection_stream.py -d true (or false)
 
 # Issue list:
 # TODO If no light source, keep running feed! Fix this loop
@@ -101,46 +101,6 @@ def thresholdmask(inputFrame):
 	cnts = contours.sort_contours(cnts)[0]
   
 	return cnts
-
-def wait_key(): # This code could be used when debugMode is FALSE
-	# ''' Wait for a key press on the console and return it. '''
-		result = None
-		if os.name == 'nt':
-			import msvcrt
-			result = msvcrt.getch()
-		else:
-			import termios
-			fd = sys.stdin.fileno()
-
-			oldterm = termios.tcgetattr(fd)
-			newattr = termios.tcgetattr(fd)
-			newattr[3] = newattr[3] & ~termios.ICANON & ~termios.ECHO
-			termios.tcsetattr(fd, termios.TCSANOW, newattr)
-
-			try:
-					result = sys.stdin.read(1)
-			except IOError:
-					pass
-			finally:
-					termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)
-
-		return result
-
-def OfillMaskAddText(cnts, inputFrame):
-	for (i, c) in enumerate(cnts):
-																					
-		cv2.fillPoly(inputFrame, pts = [c], color=(0,128,0))
-
-		if debugMode == True:
-			coordinateOutput(i, *c)
-
-	inputFrame = interpolateSizeUp(inputFrame)
-	
-	for (i, c) in enumerate(cnts):
-		(x, y, w, h) = cv2.boundingRect(c)																						
-		cv2.putText(inputFrame, "#{}".format(i + 1), ((x*10), (y*10) - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1)
-
-	return inputFrame
 
 def fillMaskAddText(cnts, inputFrame):
 	for (i, c) in enumerate(cnts):
