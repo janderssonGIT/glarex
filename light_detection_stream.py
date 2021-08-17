@@ -1,4 +1,4 @@
-# USAGE
+# To use:
 # in .py file folder: /Users/opencv/light_detection_stream
 # - workon cv
 # - deactivate
@@ -20,7 +20,6 @@ import argparse
 import imutils
 import time
 import cv2
-import sys, os
 
 MIN_INTENSITY = 225
 MAX_INTENSITY = 255
